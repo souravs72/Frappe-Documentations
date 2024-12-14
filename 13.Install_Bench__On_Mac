@@ -1,0 +1,126 @@
+# Frappe Installation & Setup
+
+
+Frappe is a full-stack web application framework written in Python. It is designed to make it easy to build and deploy web applications with a focus on simplicity and scalability.
+
+
+## Prerequisites for Frappe Version 15/Nightly
+
+- Python ≥ 3.10
+
+- Node.js: 18
+
+- MariaDB ≥ 10.6.6
+
+
+## Installation Steps
+
+
+1. **Install Command Line Version of Xcode Tools:**
+
+
+   ```bash
+   xcode-select --install
+   ```
+
+2. **Install Homebrew if Not Installed:**
+    ```bash
+    /bin/bash -c "$(curl -fsSL <https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh>)"
+    ```
+
+3. **Install Required Packages Using Brew**:
+    ```bash
+    brew install python git redis mariadb node
+    ```
+
+4. **Install wkhtmltopdf:**
+
+    ```bash
+    brew install --cask wkhtmltopdf
+    ```
+
+5. **Edit MariaDB Configuration File:**
+
+    For Intel Chip:
+
+    ```bash
+    nano /usr/local/etc/my.cnf
+    ```
+
+    For Apple Silicon:
+    ```bash
+    nano /opt/homebrew/etc/my.cnf
+    ```
+
+6. **Add the following configuration:**
+    ```bash
+    [mysqld]
+    character-set-client-handshake = FALSE
+    character-set-server = utf8mb4
+    collation-server = utf8mb4_unicode_ci
+    bind-address = 127.0.0.1
+
+    [mysql]
+    default-character-set = utf8mb4
+    ```
+
+
+7. **Now, just restart the mysql service and you are good to go.:**
+    ```bash
+    brew services restart mariadb
+    ```
+
+8. **Install Bench CLI:**
+    ```bash
+    pip3 install frappe-bench
+    ```
+
+9. **Confirm the bench installation by checking the version:**
+    ```bash
+    bench --version  # output 5.2.1
+    ```
+
+10. **Create your first bench folder:**
+    ```bash
+    cd ~  # to your own choice of directory 
+    bench init frappe-bench
+    ```
+
+    This will create a directory named frappe-bench in your current working directory. It will do the following:
+        Create a Python virtual environment under the env directory.
+        Fetch and install the Frappe app as a Python package.
+        Install node modules of Frappe.
+        Build static assets.
+
+## Directory Structure
+```
+├── Procfile
+├── apps
+│   └── frappe
+├── config
+│   ├── pids
+│   ├── redis_cache.conf
+│   ├── redis_queue.conf
+│   └── redis_socketio.conf
+├── env
+│   ├── bin
+│   ├── include
+│   ├── lib
+│   └── share
+├── logs
+│   ├── backup.log
+│   └── bench.log
+└── sites
+    ├── apps.txt
+    ├── assets
+    └── common_site_config.json
+```
+
+Start the Frappe Web Server:
+
+    cd frappe-bench/ 
+    bench start
+
+Congratulations, you have installed Bench on your system!
+
+Remember to refer to the Frappe documentation for more detailed instructions and additional configuration options.
